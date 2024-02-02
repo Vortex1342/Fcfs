@@ -12,7 +12,8 @@
         #hideInstruction {
             cursor: pointer;
         }
-        span{
+
+        span {
             font-size: small;
             padding: 0.2rem;
             text-align: end;
@@ -61,17 +62,12 @@
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProcessModal">
                 Add Process
             </button>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateProcessModal">
-                Update Process
-            </button>
-            <button type="button" class="btn btn-primary" onclick="createGanttChart()">
-                FCFS 
-            </button>
         </div>
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="addProcessModal" tabindex="-1" aria-labelledby="addProcessModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addProcessModal" tabindex="-1" aria-labelledby="addProcessModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -87,33 +83,14 @@
                         placeholder="Burst Time">
                 </div>
                 <div class="modal-footer text-center">
-                    <button type="button" class="btn btn-primary" onclick="addProcess()" data-bs-dismiss="modal">Add Process</button>
+                    <button type="button" class="btn btn-primary" onclick="addProcess()" data-bs-dismiss="modal">Add
+                        Process</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="updateProcessModal" tabindex="-1" aria-labelledby="updateProcessModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="updateProcessModalLabel">Update Process</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" name="processName" id="uProcessName" class="rounded-2 px-1 py-2"
-                        placeholder="Process Name">
-                    <input type="number" name="arrivalTime" id="uArrivalTime" class="rounded-2 px-1 py-2"
-                        placeholder="Arrival Time">
-                    <input type="number" name="burstTime" id="uBurstTime" class="rounded-2 px-1 py-2"
-                        placeholder="Burst Time">
-                </div>
-                <div class="modal-footer text-center">
-                    <button type="button" class="btn btn-primary" onclick="updateProcess()" data-bs-dismiss="modal">Update Process</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     <div class="row py-4">
         <div class="col-md-4"></div>
