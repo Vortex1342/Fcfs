@@ -1,0 +1,165 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+        #showInstruction,
+        #hideInstruction {
+            cursor: pointer;
+        }
+        span{
+            font-size: small;
+            padding: 0.2rem;
+            text-align: end;
+        }
+    </style>
+    <title>
+        FCFS Project
+    </title>
+</head>
+
+<body>
+    <div class="row py-4">
+        <div class="col"></div>
+        <div class="col text-center">
+            <h5>
+                FCFS
+            </h5>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="row py-4 border-top border-bottom">
+        <div class="col"></div>
+        <div class="col text-center">
+            <h5>
+                INSTRUCTIONS
+            </h5>
+        </div>
+        <div class="col text-end">
+            <span class="material-symbols-outlined" onclick="openInstruction()" id="showInstruction">
+                expand_more
+            </span>
+            <span class="material-symbols-outlined" onclick="closeInstruction()" id="hideInstruction">
+                expand_less
+            </span>
+        </div>
+    </div>
+
+    <div class="row py-2" id="instruction">
+        <div class="col-md-2"></div>
+        <div class="col text-center">
+            <input type="number" name="noOfProcess" id="noOfProcess" class="rounded-3 px-2 py-3">
+            <button class="btn btn-success rounded-4 px-5 py-3" onclick="createProcesses()">Submit</button>
+        </div>
+        <div class="col-md-2">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProcessModal">
+                Add Process
+            </button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateProcessModal">
+                Update Process
+            </button>
+            <button type="button" class="btn btn-primary" onclick="createGanttChart()">
+                FCFS 
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="addProcessModal" tabindex="-1" aria-labelledby="addProcessModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addProcessModalLabel">Add a process</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" name="processName" id="processName" class="rounded-2 px-1 py-2"
+                        placeholder="Process Name">
+                    <input type="number" name="arrivalTime" id="arrivalTime" class="rounded-2 px-1 py-2"
+                        placeholder="Arrival Time">
+                    <input type="number" name="burstTime" id="burstTime" class="rounded-2 px-1 py-2"
+                        placeholder="Burst Time">
+                </div>
+                <div class="modal-footer text-center">
+                    <button type="button" class="btn btn-primary" onclick="addProcess()" data-bs-dismiss="modal">Add Process</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="updateProcessModal" tabindex="-1" aria-labelledby="updateProcessModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="updateProcessModalLabel">Update Process</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" name="processName" id="uProcessName" class="rounded-2 px-1 py-2"
+                        placeholder="Process Name">
+                    <input type="number" name="arrivalTime" id="uArrivalTime" class="rounded-2 px-1 py-2"
+                        placeholder="Arrival Time">
+                    <input type="number" name="burstTime" id="uBurstTime" class="rounded-2 px-1 py-2"
+                        placeholder="Burst Time">
+                </div>
+                <div class="modal-footer text-center">
+                    <button type="button" class="btn btn-primary" onclick="updateProcess()" data-bs-dismiss="modal">Update Process</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row py-4">
+        <div class="col-md-4"></div>
+        <div class="col-6 col-md-2 text-center">
+            <button class="btn btn-primary rounded-4 px-5 py-3" onclick="reset()">Reset</button>
+        </div>
+        <div class="col-6 col-md-2 text-center">
+            <button class="btn btn-light rounded-4 px-5 py-3" onclick="addGanttChart()">Start</button>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="row py-2">
+        <div class="col-md-2"></div>
+        <div class="col text-center">
+            <table class="table table-striped table-bordered text-center" id="tableData">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">PROCESS ID</th>
+                        <th scope="col">ARRIVAL TIME</th>
+                        <th scope="col">BURST TIME</th>
+                    </tr>
+                </thead>
+                <tbody id="tableContent">
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="row py-2">
+        <div class="col-2 text-center p-2">
+            <h5>
+                GANTT CHART
+            </h5>
+            <button class="btn btn-primary" onclick="addGanttChart()">Add Gantt</button>
+        </div>
+        <div class="col">
+            <div class="row bg-light p-4 px-4" id="ganttChart">
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+    <script src="./index.js"></script>
+</body>
+
+</html>
