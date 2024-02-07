@@ -95,8 +95,7 @@ function updateProcess() {
 // }
 
 function addGanttChart(){
-    processes.forEach(process => {
-        fcfsCompare();
+    fcfsCompare();
     if(ganttIndex < processes.length-1)
         ganttIndex ++;
     else
@@ -106,7 +105,6 @@ function addGanttChart(){
     let tableContent = document.getElementById("ganttChart").innerHTML;
     tableContent +=  content;
     document.getElementById("ganttChart").innerHTML = tableContent;
-    });
     
 }
 
