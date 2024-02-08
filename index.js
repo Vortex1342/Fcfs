@@ -94,13 +94,15 @@ function updateProcess() {
 //     addGanttChart(tableContent);
 // }
 function start(){
-    setInterval(addGanttChart,500);
-}
-update();
-function update(){
-    console.log(document.querySelector("#slider").value)
+    setInterval(addGanttChart,slidervalue*10);
 }
 
+const slider = document.querySelector("#slider")
+var slidervalue = slider.value
+slider.addEventListener("input", () => {
+    slidervalue = slider.value
+    console.log(slidervalue)
+})
 function addGanttChart(){
     fcfsCompare();
     if(ganttIndex < processes.length-1)
