@@ -93,6 +93,13 @@ function updateProcess() {
 //     fcfsCompare();
 //     addGanttChart(tableContent);
 // }
+function start(){
+    setInterval(addGanttChart,500);
+}
+update();
+function update(){
+    console.log(document.querySelector("#slider").value)
+}
 
 function addGanttChart(){
     fcfsCompare();

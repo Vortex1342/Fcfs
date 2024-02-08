@@ -56,6 +56,12 @@
         <div class="col text-center">
             <input type="number" name="noOfProcess" id="noOfProcess" class="rounded-3 px-2 py-3">
             <button class="btn btn-success rounded-4 px-5 py-3" onclick="createProcesses()">Submit</button>
+            <div>
+                <div>
+                    <label for="customRange1" class="form-label mt-3">Speed of animation</label>
+                </div>
+                <input type="range" class="form-range mt-3" min="0" max="100" id="slider" style="width: 40vw;">
+            </div>
         </div>
         <div class="col-md-2">
             <!-- Button trigger modal -->
@@ -98,7 +104,7 @@
             <button class="btn btn-primary rounded-4 px-5 py-3" onclick="reset()">Reset</button>
         </div>
         <div class="col-6 col-md-2 text-center">
-            <button class="btn btn-light rounded-4 px-5 py-3" onclick="addGanttChart()">Start</button>
+            <button class="btn btn-light rounded-4 px-5 py-3" onclick="start()">Start</button>
         </div>
         <div class="col-md-4"></div>
     </div>
