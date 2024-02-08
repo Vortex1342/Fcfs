@@ -18,6 +18,11 @@
             padding: 0.2rem;
             text-align: end;
         }
+
+        #slider{
+            padding: 0%;
+            margin-top: 1.5vh;
+        }
     </style>
     <title>
         FCFS Project
@@ -60,7 +65,27 @@
                 <div>
                     <label for="customRange1" class="form-label mt-3">Speed of animation</label>
                 </div>
-                <input type="range" class="form-range mt-3" min="0" max="100" id="slider" style="width: 40vw;">
+                <div class="row">
+                    <div class="col"></div>
+                    <div class="col-1">
+                        <p id="slider">
+                            Max. Speed
+                        </p>
+                    </div>
+                    <div class="col">
+                        <input type="range" class="form-range mt-3" min="100" max="2500" id="slider-bar"
+                            style="width: 30vw;">
+                    </div>
+                    <div class="col-1">
+                        <p id="slider">
+                            Min. Speed
+                        </p>
+                    </div>
+                    <div class="col"></div>
+                </div>
+
+
+
             </div>
         </div>
         <div class="col-md-2">
@@ -112,11 +137,14 @@
         <div class="col-md-2"></div>
         <div class="col text-center">
             <table class="table table-striped table-bordered text-center" id="tableData">
-                <thead class="table-dark">
+                <thead class="table-dark" id="head-table">
                     <tr>
-                        <th scope="col">PROCESS ID</th>
-                        <th scope="col">ARRIVAL TIME</th>
-                        <th scope="col">BURST TIME</th>
+                        <th scope="col-2">PROCESS ID</th>
+                        <th scope="col-2">ARRIVAL TIME</th>
+                        <th scope="col-2">BURST TIME</th>
+                        <th scope="col-2" id = "completion-time">COMPLETION TIME</th>
+                        <th scope="col-2" id = "tat">TAT</th>
+                        <th scope="col-2" id = "wt">WT</th>
                     </tr>
                 </thead>
                 <tbody id="tableContent">
