@@ -19,7 +19,7 @@
             text-align: end;
         }
 
-        #slider{
+        #slider {
             padding: 0%;
             margin-top: 1.5vh;
         }
@@ -138,13 +138,10 @@
         <div class="col text-center">
             <table class="table table-striped table-bordered text-center" id="tableData">
                 <thead class="table-dark" id="head-table">
-                    <tr>
+                    <tr id="tableHeadRow">
                         <th scope="col-2">PROCESS ID</th>
                         <th scope="col-2">ARRIVAL TIME</th>
                         <th scope="col-2">BURST TIME</th>
-                        <th scope="col-2" id = "completion-time">COMPLETION TIME</th>
-                        <th scope="col-2" id = "tat">TAT</th>
-                        <th scope="col-2" id = "wt">WT</th>
                     </tr>
                 </thead>
                 <tbody id="tableContent">
@@ -158,7 +155,7 @@
             <h5>
                 GANTT CHART
             </h5>
-            <button class="btn btn-primary" onclick="addGanttChart()">Add Gantt</button>
+            <button class="btn btn-primary" onclick="addGanttChart()" id="addGanttBtn">Add Gantt</button>
         </div>
         <div class="col">
             <div class="row bg-light p-4 px-4" id="ganttChart">

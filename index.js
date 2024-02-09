@@ -1,20 +1,22 @@
 document.getElementById("tableData").style.display = "none";
 document.getElementById("instruction").style.display = "none";
 document.getElementById("hideInstruction").style.display = "none";
-document.getElementById("completion-time").style.display = "none";
-document.getElementById("tat").style.display = "none";
-document.getElementById("wt").style.display = "none";
 
 let processes = [];
 let ganttIndex = -1;
 let totalTime = 0;
+let intervalId = null;
+let ganttStatus = false;
 
 class Processes {
-    constructor(name, arrivalTime, burstTime, priority = 0, ) {
+    constructor(name, arrivalTime, burstTime, priority = 0, completiontime = 0, wt=0 ,tat=0) {
         this.name = name;
         this.arrivalTime = arrivalTime;
         this.burstTime = burstTime;
         this.priority = priority;
+        this.completiontime = completiontime;
+        this.wt = wt;
+        this.tat = tat;
     }
 }
 
@@ -48,47 +50,23 @@ function addProcess() {
 
 function generateTable() {
     let tableContent = "";
-    // let currentTime = 0;
-    // let completionTime = 0;
     processes.forEach(process => {
-    //     for (let index = 0; index < processes.length; index++) {
-    //         if(currentTime < process.arrivalTime && ){
-    //             currentTime = process.arrivalTime;
-    //             console.log("cT " + currentTime);
-    //             let x =process.burstTime;
-    //             completionTime = completionTime + x;
-    //             console.log("X "+completionTime);
-    //         } 
-    //     }
-        
-        // process.completionTime = completionTime;
         let row = process.name;
         tableContent += "<tr id="+row+">";
         tableContent += "<td>" + process.name + "</td>";
         tableContent += "<td>" + process.arrivalTime + "</td>";
         tableContent += "<td>" + process.burstTime + "</td>";
-        // tableContent += "<td>" + process.completionTime + "</td>"; // Use completionTime here
+        if(process.completiontime != 0)
+            tableContent += "<td>" + process.completiontime + "</td>";
+        if(process.tat != 0)
+            tableContent += "<td>" + process.tat + "</td>";
+        if(process.wt != 0)
+            tableContent += "<td>" + process.wt + "</td>";
         tableContent += "</tr>";
     });
     document.getElementById("tableData").style.display = "";
     document.getElementById("tableContent").innerHTML = tableContent;
-    document.getElementById("completion-time").style.display = "";
 }
-
-
-// async function generateCompletion() {
-//     fcfsCompare();   
-//     processes.forEach(process =>{
-//         if(ganttIndex < processes.length-1)
-//         ganttIndex ++;
-//         totalTime += processes[ganttIndex].burstTime;
-//         let completion = totalTime;
-//         tableContent += "<td>" + completion + "</td>";
-//     });
-//     document.getElementById("tableContent").innerHTML = tableContent;
-// }
-
-
 
 function openInstruction() {
     document.getElementById("instruction").style.display = "";
@@ -127,8 +105,14 @@ function updateProcess() {
 //     addGanttChart(tableContent);
 // }
 
+let autoComplete = function (){
+    if (ganttStatus)
+        clearInterval (intervalId);
+    else
+        addGanttChart();
+}
 function start(){
-    setInterval(addGanttChart,slidervalue);
+    intervalId = setInterval(autoComplete,slidervalue);
 }
 
 const slider = document.querySelector("#slider-bar")
@@ -136,18 +120,44 @@ var slidervalue = slider.value;
 slider.addEventListener("input", () => {
     slidervalue = slider.value;
 })
+
 function addGanttChart(){
     fcfsCompare();
     if(ganttIndex < processes.length-1)
         ganttIndex ++;
-    else
+    else{
+        ganttStatus = true;
+        showResult();
         return;
+    }
     totalTime += processes[ganttIndex].burstTime;
     let content = "<div class=\"col border-end\"> " + processes[ganttIndex].name + "<span class=\"text-end\">" + totalTime + "</span> </div>";
     let tableContent = document.getElementById("ganttChart").innerHTML;
     tableContent +=  content;
     document.getElementById("ganttChart").innerHTML = tableContent;
     
+}
+
+function showResult(){
+    let columns = document.getElementById("tableHeadRow").innerHTML;
+    columns += "<th scope=\"col-2\">COMPLETION</th>";
+    columns += "<th scope=\"col-2\">TAT</th>";
+    columns += "<th scope=\"col-2\">WT</th>";
+    document.getElementById("tableHeadRow").innerHTML = columns;
+    document.getElementById("addGanttBtn").disabled = true;
+    generateResultData();
+}
+
+function generateResultData(){
+    let cTime = 0;
+    for (let index = 0; index < processes.length; index++) {
+        cTime += processes[index].burstTime;
+        processes[index].completiontime = cTime;
+        processes[index].tat = processes[index].completiontime - processes[index].arrivalTime;
+        console.log(processes[index].tat);
+        processes[index].wt = processes[index].tat - processes[index].burstTime;
+    }
+    generateTable();
 }
 
 function fcfsCompare(){
