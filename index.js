@@ -14,9 +14,9 @@ class Processes {
     arrivalTime,
     burstTime,
     priority = 0,
-    completiontime = 0,
-    wt = 0,
-    tat = 0
+    completiontime = -1,
+    wt = -1,
+    tat = -1
   ) {
     this.name = name;
     this.arrivalTime = arrivalTime;
@@ -28,7 +28,7 @@ class Processes {
   }
 }
 
-function createProcesses() {
+function createProcesses_main() {
   processes = [];
 
   // Add 5 processes with specific values
@@ -45,20 +45,24 @@ function createProcesses() {
     let process = new Processes(name, arrivalTime, burstTime);
     processes.push(process);
   }
-
+  resetCompletionTimeColumn();
+  document.getElementById("addGanttBtn").disabled = false;
+  document.getElementById("ganttChart").innerHTML = "";
+  ganttIndex = -1;
+  ganttStatus = false;
   generateTable();
 }
 
-function addProcess() {
-  let pName = document.getElementById("processName").value;
-  let arrivalTime = document.getElementById("arrivalTime").value;
-  let burstTime = document.getElementById("burstTime").value;
+// function addProcess() {
+//   let pName = document.getElementById("processName").value;
+//   let arrivalTime = document.getElementById("arrivalTime").value;
+//   let burstTime = document.getElementById("burstTime").value;
 
-  let process = new Processes(pName, arrivalTime, burstTime);
-  processes.push(process);
+//   let process = new Processes(pName, arrivalTime, burstTime);
+//   processes.push(process);
 
-  generateTable();
-}
+//   generateTable();
+// }
 
 function openInstruction() {
   document.getElementById("instruction").style.display = "";
@@ -88,17 +92,6 @@ function updateProcess() {
 
   generateTable();
 }
-
-let autoComplete = function () {
-  if (ganttStatus) clearInterval(intervalId);
-  else addGanttChart();
-};
-
-const slider = document.querySelector("#slider-bar");
-var slidervalue = slider.value;
-slider.addEventListener("input", () => {
-  slidervalue = slider.value;
-});
 
 function addGanttChart() {
   fcfsCompare();
@@ -136,20 +129,20 @@ function generateTable() {
     tableContent += "<td>" + process.arrivalTime + "</td>";
     tableContent += "<td>" + process.burstTime + "</td>";
 
-    process.completiontime
+    (process.completiontime != -1 )
       ? (tableContent += "<td>" + process.completiontime + "</td>")
       : null;
 
-    process.tat
+    (process.tat != -1)
       ? (tableContent +=
-          "<td>" + (process.tat === 0 ? "0" : process.tat) + "</td>")
+        "<td>" + (process.tat === 0 ? "0" : process.tat) + "</td>")
       : null;
 
-    process.wt
+    (process.wt != -1)
       ? (tableContent +=
-          "<td>" +
-          (processId === 0 && process.wt === 0 ? "0" : process.wt) +
-          "</td>")
+        "<td>" +
+        (processId === 0 && process.wt === 0 ? "0" : process.wt) +
+        "</td>")
       : null;
 
     tableContent += "</tr>";
@@ -187,6 +180,12 @@ function revealCompletionTimeColumn() {
   document.getElementById("completionTimeHeader3").style.display = "";
 }
 
+function resetCompletionTimeColumn() {
+  document.getElementById("completionTimeHeader").style.display = "none";
+  document.getElementById("completionTimeHeader2").style.display = "none";
+  document.getElementById("completionTimeHeader3").style.display = "none";
+}
+
 function generateResultData() {
   let cTime = 0;
   for (let index = 0; index < processes.length; index++) {
@@ -218,10 +217,5 @@ function fcfs(x, y) {
 
 function reset() {
   document.getElementById("ganttChart").innerHTML = "";
-  document.getElementById("tableData").innerHTML = "";
-}
-function revealCompletionTimeColumn() {
-  document.getElementById("completionTimeHeader").style.display = "";
-  document.getElementById("completionTimeHeader2").style.display = "";
-  document.getElementById("completionTimeHeader3").style.display = "";
+  document.getElementById("tableData").style.display = "none";
 }
