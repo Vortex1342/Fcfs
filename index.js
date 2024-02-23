@@ -53,17 +53,6 @@ function createProcesses_main() {
   generateTable();
 }
 
-// function addProcess() {
-//   let pName = document.getElementById("processName").value;
-//   let arrivalTime = document.getElementById("arrivalTime").value;
-//   let burstTime = document.getElementById("burstTime").value;
-
-//   let process = new Processes(pName, arrivalTime, burstTime);
-//   processes.push(process);
-
-//   generateTable();
-// }
-
 function openInstruction() {
   document.getElementById("instruction").style.display = "";
   document.getElementById("hideInstruction").style.display = "";
@@ -102,10 +91,20 @@ function addGanttChart() {
     return;
   }
 
-  totalTime += processes[ganttIndex].burstTime;
+  const currentProcess = processes[ganttIndex];
+  totalTime += currentProcess.burstTime;
+
+  // Display a message indicating the process, burst time, and completion time
+  const message = `${currentProcess.name} requires ${
+    currentProcess.burstTime
+  } seconds to complete, which means ${
+    totalTime - currentProcess.burstTime
+  } + ${currentProcess.burstTime} = ${totalTime} is the completion time.`;
+  displayMessage(message);
+
   let content =
     '<div class="col flex border border-r-black"> ' +
-    processes[ganttIndex].name +
+    currentProcess.name +
     '<div class="text-end">' +
     totalTime +
     "</div> </div>";
@@ -113,10 +112,28 @@ function addGanttChart() {
   tableContent += content;
   document.getElementById("ganttChart").innerHTML = tableContent;
 
-  let rowId = processes[ganttIndex].name;
+  let rowId = currentProcess.name;
   let tableRow = document.getElementById(rowId);
   if (tableRow) {
     tableRow.style.opacity = "0.3";
+  }
+}
+
+function displayMessage(message) {
+  // Create a message element
+  const messageElement = document.createElement("div");
+  messageElement.className = "alert alert-info";
+  messageElement.textContent = message;
+
+
+  const leftSide = document.getElementById("leftSide"); 
+  if (leftSide) {
+    leftSide.appendChild(messageElement);
+
+
+    setTimeout(() => {
+      leftSide.removeChild(messageElement);
+    }, 3000);
   }
 }
 
@@ -129,20 +146,31 @@ function generateTable() {
     tableContent += "<td>" + process.arrivalTime + "</td>";
     tableContent += "<td>" + process.burstTime + "</td>";
 
-    (process.completiontime != -1 )
-      ? (tableContent += "<td>" + process.completiontime + "</td>")
+    process.completiontime != -1
+      ? (tableContent +=
+          "<td class='blue-text'>" + process.completiontime + "</td>")
       : null;
 
-    (process.tat != -1)
+    process.tat !== -1
       ? (tableContent +=
-        "<td>" + (process.tat === 0 ? "0" : process.tat) + "</td>")
+          "<td>" +
+          process.completiontime +
+          " - " +
+          process.arrivalTime +
+          " = " +
+          (process.completiontime - process.arrivalTime) +
+          "</td>")
       : null;
 
-    (process.wt != -1)
+    process.wt !== -1
       ? (tableContent +=
-        "<td>" +
-        (processId === 0 && process.wt === 0 ? "0" : process.wt) +
-        "</td>")
+          "<td>" +
+          process.tat +
+          " - " +
+          process.burstTime +
+          " = " +
+          (process.tat - process.burstTime) +
+          "</td>")
       : null;
 
     tableContent += "</tr>";
@@ -153,7 +181,6 @@ function generateTable() {
     tableContentElement.innerHTML = tableContent;
   }
 
-  // Display the "tableData" element
   let tableDataElement = document.getElementById("tableData");
   if (tableDataElement) {
     tableDataElement.style.display = "";
@@ -171,6 +198,12 @@ function showResult() {
 
   if (ganttIndex === processes.length - 1) {
     revealCompletionTimeColumn();
+  }
+  if (ganttIndex === processes.length - 1) {
+    
+
+    revealCompletionTimeColumn();
+    displayFormulas(); 
   }
 }
 
@@ -217,5 +250,18 @@ function fcfs(x, y) {
 
 function reset() {
   document.getElementById("ganttChart").innerHTML = "";
+
+
+  totalTime = 0;
+
+  processes.forEach((process) => {
+    let rowId = process.name;
+    let tableRow = document.getElementById(rowId);
+    if (tableRow) {
+      tableRow.style.opacity = "1.0";
+    }
+  });
+
+
   document.getElementById("tableData").style.display = "none";
 }
