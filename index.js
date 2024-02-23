@@ -2,6 +2,8 @@ document.getElementById("tableData").style.display = "none";
 document.getElementById("instruction").style.display = "none";
 document.getElementById("hideInstruction").style.display = "none";
 
+btnDisabled();
+
 let processes = [];
 let ganttIndex = -1;
 let totalTime = 0;
@@ -28,6 +30,11 @@ class Processes {
   }
 }
 
+function btnDisabled(){
+  let btnAddGanttChart = document.getElementById("addGanttBtn");
+  btnAddGanttChart.disabled=true;
+}
+
 function createProcesses_main() {
   processes = [];
 
@@ -51,6 +58,8 @@ function createProcesses_main() {
   ganttIndex = -1;
   ganttStatus = false;
   generateTable();
+  let btnStart = document.getElementById("btn_Start");
+  btnStart.disabled=true;
 }
 
 function openInstruction() {
@@ -120,21 +129,7 @@ function addGanttChart() {
 }
 
 function displayMessage(message) {
-  // Create a message element
-  const messageElement = document.createElement("div");
-  messageElement.className = "alert alert-info";
-  messageElement.textContent = message;
-
-
-  const leftSide = document.getElementById("leftSide"); 
-  if (leftSide) {
-    leftSide.appendChild(messageElement);
-
-
-    setTimeout(() => {
-      leftSide.removeChild(messageElement);
-    }, 3000);
-  }
+  document.getElementById("leftSide").innerHTML = message
 }
 
 function generateTable() {
@@ -250,6 +245,10 @@ function fcfs(x, y) {
 
 function reset() {
   document.getElementById("ganttChart").innerHTML = "";
+  let btnStart = document.getElementById("btn_Start");
+  btnStart.disabled=false;
+  let btnAddGanttChart = document.getElementById("addGanttBtn");
+  btnAddGanttChart.disabled=false;
 
 
   totalTime = 0;
