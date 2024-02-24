@@ -129,7 +129,21 @@ function addGanttChart() {
 }
 
 function displayMessage(message) {
-  document.getElementById("leftSide").innerHTML = message
+  // Create a message element
+  const messageElement = document.createElement("div");
+  messageElement.className = "alert alert-info";
+  messageElement.textContent = message;
+
+
+  const leftSide = document.getElementById("leftSide"); 
+  if (leftSide) {
+    leftSide.appendChild(messageElement);
+
+
+    setTimeout(() => {
+      leftSide.removeChild(messageElement);
+    }, 3000);
+  }
 }
 
 function generateTable() {
