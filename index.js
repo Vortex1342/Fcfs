@@ -62,6 +62,15 @@ function createProcesses_main() {
   btnStart.disabled=true;
 }
 
+function addProcess(){
+  let pName = document.getElementById("processName").value;
+    let arrivalTime = document.getElementById("arrivalTime").value;
+    let burstTime = document.getElementById("burstTime").value;
+    let process = new Processes(pName, arrivalTime, burstTime);
+    processes.push(process);
+    generateTable();
+}
+
 function openInstruction() {
   document.getElementById("instruction").style.display = "";
   document.getElementById("hideInstruction").style.display = "";
@@ -148,7 +157,7 @@ function displayMessage(message) {
 
 function generateTable() {
   let tableContent = "";
-  processes.forEach((process, processId) => {
+  processes.forEach((process) => {
     let row = process.name;
     tableContent += "<tr id=" + row + ">";
     tableContent += "<td>" + process.name + "</td>";
