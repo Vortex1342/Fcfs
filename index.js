@@ -64,8 +64,8 @@ function createProcesses_main() {
 
 function addProcess(){
   let pName = document.getElementById("processName").value;
-    let arrivalTime = document.getElementById("arrivalTime").value;
-    let burstTime = document.getElementById("burstTime").value;
+    let arrivalTime = parseInt(document.getElementById("arrivalTime").value);
+    let burstTime = parseInt(document.getElementById("burstTime").value);
     let process = new Processes(pName, arrivalTime, burstTime);
     processes.push(process);
     generateTable();
