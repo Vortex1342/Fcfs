@@ -38,15 +38,6 @@ function btnDisabled(){
 function createProcesses_main() {
   processes = [];
 
-  // Add 5 processes with specific values
-  const processData = [
-    { name: "P1", arrivalTime: 2, burstTime: 6 },
-    { name: "P2", arrivalTime: 5, burstTime: 2 },
-    { name: "P3", arrivalTime: 1, burstTime: 8 },
-    { name: "P4", arrivalTime: 0, burstTime: 2 },
-    { name: "P5", arrivalTime: 4, burstTime: 4 },
-  ];
-
   for (let index = 0; index < processData.length; index++) {
     const { name, arrivalTime, burstTime } = processData[index];
     let process = new Processes(name, arrivalTime, burstTime);
@@ -58,8 +49,6 @@ function createProcesses_main() {
   ganttIndex = -1;
   ganttStatus = false;
   generateTable();
-  let btnStart = document.getElementById("btn_Start");
-  btnStart.disabled=true;
 }
 
 function addProcess(){
@@ -69,6 +58,8 @@ function addProcess(){
     let process = new Processes(pName, arrivalTime, burstTime);
     processes.push(process);
     generateTable();
+    let btnAddGanttChart = document.getElementById("addGanttBtn");
+    btnAddGanttChart.disabled=false;
 }
 
 function openInstruction() {
@@ -151,7 +142,7 @@ function displayMessage(message) {
 
     setTimeout(() => {
       leftSide.removeChild(messageElement);
-    }, 3000);
+    }, 5000);
   }
 }
 
