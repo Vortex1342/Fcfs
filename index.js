@@ -2,7 +2,6 @@ document.getElementById("tableData").style.display = "none";
 document.getElementById("instruction").style.display = "none";
 document.getElementById("hideInstruction").style.display = "none";
 
-btnDisabled();
 
 let processes = [];
 let ganttIndex = -1;
@@ -30,25 +29,21 @@ class Processes {
   }
 }
 
-function btnDisabled(){
-  let btnAddGanttChart = document.getElementById("addGanttBtn");
-  btnAddGanttChart.disabled=true;
-}
+
 
 function createProcesses_main() {
-  processes = [];
-
-  for (let index = 0; index < processData.length; index++) {
-    const { name, arrivalTime, burstTime } = processData[index];
-    let process = new Processes(name, arrivalTime, burstTime);
-    processes.push(process);
-  }
-  resetCompletionTimeColumn();
-  document.getElementById("addGanttBtn").disabled = false;
-  document.getElementById("ganttChart").innerHTML = "";
-  ganttIndex = -1;
-  ganttStatus = false;
-  generateTable();
+  // processes = [];
+  addGanttChart()
+  // for (let index = 0; index < processData.length; index++) {
+  //   const { name, arrivalTime, burstTime } = processData[index];
+  //   let process = new Processes(name, arrivalTime, burstTime);
+  //   processes.push(process);
+  // }
+  // resetCompletionTimeColumn();
+  // ganttIndex = -1;
+  // ganttStatus = false;
+  
+  // generateTable();
 }
 
 function addProcess(){
@@ -58,8 +53,6 @@ function addProcess(){
     let process = new Processes(pName, arrivalTime, burstTime);
     processes.push(process);
     generateTable();
-    let btnAddGanttChart = document.getElementById("addGanttBtn");
-    btnAddGanttChart.disabled=false;
 }
 
 function openInstruction() {
